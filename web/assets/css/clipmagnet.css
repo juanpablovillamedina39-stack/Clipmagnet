@@ -369,6 +369,8 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
 .engine.ok .dot { background: var(--gold); box-shadow: 0 0 10px var(--gold); }
 .engine.off .dot { background: var(--danger); box-shadow: 0 0 10px var(--danger); }
 .engine.off { color: #ffc2b4; }
+.engine.waking .dot { background: var(--gold); animation: blink 1.1s ease-in-out infinite; }
+@keyframes blink { 50% { opacity: 0.25; } }
 
 /* ---------- Resultado ---------- */
 .result {
