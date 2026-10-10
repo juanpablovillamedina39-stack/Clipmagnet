@@ -1,0 +1,283 @@
+<!doctype html>
+<html lang="es" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>CLIPMAGNET · Descarga videos sin marca de agua</title>
+  <meta name="description" content="Descarga videos de TikTok sin marca de agua, Instagram, Facebook y YouTube en la máxima calidad, o solo el audio en MP3, M4A o WAV. Gratis, sin registro y sin anuncios engañosos.">
+  <meta name="theme-color" content="#000000">
+  <meta name="color-scheme" content="dark">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https: http://localhost:* http://127.0.0.1:*; font-src 'self'; connect-src 'self' https: http://localhost:* http://127.0.0.1:*; media-src 'self' blob:; object-src 'none'; base-uri 'none'; form-action 'self'">
+  <meta name="referrer" content="no-referrer">
+
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="CLIPMAGNET · Descarga videos sin marca de agua">
+  <meta property="og:description" content="TikTok, Instagram, Facebook y YouTube en la máxima calidad, o solo el audio.">
+  <meta property="og:image" content="assets/img/logo-512.png">
+  <meta name="twitter:card" content="summary">
+
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/img/favicon-32.png">
+  <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="preload" href="assets/fonts/unbounded-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="assets/fonts/hanken-grotesk-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="assets/css/clipmagnet.css">
+
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"WebApplication","name":"CLIPMAGNET","applicationCategory":"MultimediaApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"description":"Descarga videos de TikTok sin marca de agua, Instagram, Facebook y YouTube en la máxima calidad, o solo el audio."}
+  </script>
+</head>
+<body>
+  <a class="skip" href="#url" data-i18n="skip">Ir al descargador</a>
+
+  <header class="nav-wrap">
+    <nav class="nav lg" aria-label="Principal">
+      <a class="brand" href="#top" aria-label="CLIPMAGNET, inicio">
+        <img src="assets/img/logo-96.png" width="30" height="30" alt="">
+        <span class="wordmark">CLIPMAGNET</span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="#como" data-i18n="nav.how">Cómo funciona</a></li>
+        <li><a href="#plataformas" data-i18n="nav.platforms">Plataformas</a></li>
+        <li><a href="#seguridad" data-i18n="nav.security">Seguridad</a></li>
+        <li><a href="#preguntas" data-i18n="nav.faq">Preguntas</a></li>
+      </ul>
+      <button class="lang" id="lang-btn" type="button" aria-label="Change language to English">EN</button>
+    </nav>
+  </header>
+
+  <main>
+    <!-- ============ HERO + HERRAMIENTA ============ -->
+    <section class="hero" id="top">
+      <canvas class="field" id="field" aria-hidden="true"></canvas>
+      <div class="hero-inner">
+        <h1 class="hero-title" data-i18n-html="hero.title">Pega el enlace.<br>Llévate el video.</h1>
+        <p class="hero-sub" data-i18n="hero.sub">Descarga de TikTok sin marca de agua, Instagram, Facebook y YouTube en la mejor calidad disponible, o quédate solo con el audio.</p>
+
+        <div class="panel lg" id="magnet-target">
+          <form class="grab" id="grab-form" novalidate>
+            <label for="url" class="sr-only" data-i18n="form.label">Enlace del video</label>
+            <span class="glyph" id="glyph" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="20" height="20"><path d="M10 14a4.5 4.5 0 0 0 6.4 0l3.2-3.2a4.5 4.5 0 0 0-6.4-6.4l-1 1M14 10a4.5 4.5 0 0 0-6.4 0l-3.2 3.2a4.5 4.5 0 0 0 6.4 6.4l1-1" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+            </span>
+            <input id="url" name="url" type="url" inputmode="url" autocomplete="off" autocapitalize="off" spellcheck="false" enterkeyhint="go"
+                   placeholder="Pega aquí el enlace del video" data-i18n-placeholder="form.placeholder">
+            <button type="button" class="btn btn-ghost" id="paste-btn" data-i18n="form.paste">Pegar</button>
+            <button type="submit" class="btn btn-gold" id="analyze-btn">
+              <span class="btn-label" data-i18n="form.submit">Ver calidades</span>
+              <span class="spinner" aria-hidden="true"></span>
+            </button>
+          </form>
+
+          <ul class="platforms" id="platforms" aria-label="Plataformas compatibles">
+            <li data-p="tiktok">TikTok</li>
+            <li data-p="instagram">Instagram</li>
+            <li data-p="facebook">Facebook</li>
+            <li data-p="youtube">YouTube</li>
+          </ul>
+
+          <p class="alert" id="alert" role="alert" hidden></p>
+
+          <!-- Resultado -->
+          <div class="result" id="result" hidden>
+            <div class="r-head">
+              <div class="thumb" id="thumb">
+                <img id="thumb-img" alt="" decoding="async">
+                <span class="dur" id="r-duration"></span>
+              </div>
+              <div class="r-meta">
+                <p class="r-platform" id="r-platform"></p>
+                <h2 class="r-title" id="r-title"></h2>
+                <p class="r-author" id="r-author"></p>
+                <div class="items" id="items" hidden>
+                  <span class="items-label" data-i18n="result.items">Video de la publicación</span>
+                  <div class="item-chips" id="item-chips"></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="seg" role="tablist" aria-label="Tipo de descarga">
+              <button type="button" role="tab" id="tab-video" aria-selected="true" aria-controls="opts-video" data-mode="video" data-i18n="result.video">Video</button>
+              <button type="button" role="tab" id="tab-audio" aria-selected="false" aria-controls="opts-audio" data-mode="audio" data-i18n="result.audio">Solo audio</button>
+              <span class="seg-thumb" aria-hidden="true"></span>
+            </div>
+
+            <div id="opts-video" role="tabpanel" aria-labelledby="tab-video">
+              <fieldset class="opts">
+                <legend data-i18n="result.quality">Calidad</legend>
+                <div class="q-grid" id="q-grid"></div>
+              </fieldset>
+              <label class="switch" id="h264-row" hidden>
+                <input type="checkbox" id="h264">
+                <span class="track" aria-hidden="true"><span class="knob"></span></span>
+                <span class="switch-text">
+                  <strong data-i18n="result.h264">Convertir a H.264</strong>
+                  <small id="h264-hint"></small>
+                </span>
+              </label>
+            </div>
+
+            <div id="opts-audio" role="tabpanel" aria-labelledby="tab-audio" hidden>
+              <fieldset class="opts">
+                <legend data-i18n="result.format">Formato</legend>
+                <div class="q-grid q-grid-audio" id="a-grid">
+                  <label class="q"><input type="radio" name="afmt" value="mp3:320" checked><span class="q-body"><span class="q-res">MP3</span><span class="q-line"><span class="q-tag">320 kbps</span></span><span class="q-note" data-i18n="audio.mp3">El más compatible</span></span></label>
+                  <label class="q"><input type="radio" name="afmt" value="mp3:192"><span class="q-body"><span class="q-res">MP3</span><span class="q-line"><span class="q-tag">192 kbps</span></span><span class="q-note" data-i18n="audio.mp3light">Más liviano</span></span></label>
+                  <label class="q"><input type="radio" name="afmt" value="m4a:0"><span class="q-body"><span class="q-res">M4A</span><span class="q-line"><span class="q-tag" data-i18n="audio.original">Original</span></span><span class="q-note" data-i18n="audio.m4a">Sin recomprimir</span></span></label>
+                  <label class="q"><input type="radio" name="afmt" value="wav:0"><span class="q-body"><span class="q-res">WAV</span><span class="q-line"><span class="q-tag" data-i18n="audio.wavtag">Sin pérdida</span></span><span class="q-note" data-i18n="audio.wav">Para editar</span></span></label>
+                </div>
+              </fieldset>
+            </div>
+
+            <div class="action" id="action">
+              <button type="button" class="btn btn-gold btn-xl" id="download-btn">
+                <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M12 4v11m0 0-4.5-4.5M12 15l4.5-4.5M5 19h14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                <span id="download-label">Descargar</span>
+              </button>
+            </div>
+
+            <div class="progress" id="progress" hidden aria-live="polite" tabindex="-1">
+              <div class="bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="bar"><span class="fill" id="bar-fill"></span></div>
+              <div class="p-row">
+                <span class="p-stage" id="p-stage"></span>
+                <span class="p-num" id="p-num">0%</span>
+              </div>
+              <div class="p-row p-small">
+                <span id="p-speed"></span>
+                <button type="button" class="link" id="cancel-btn" data-i18n="progress.cancel">Cancelar</button>
+              </div>
+            </div>
+
+            <div class="done" id="done" hidden tabindex="-1">
+              <div class="done-head">
+                <span class="done-icon" aria-hidden="true"><svg viewBox="0 0 24 24" width="22" height="22"><path d="m5 12.5 4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+                <div>
+                  <p class="done-title" data-i18n="done.title">Tu archivo está listo</p>
+                  <p class="done-file" id="done-file"></p>
+                </div>
+              </div>
+              <p class="done-note" id="done-note"></p>
+              <div class="done-actions">
+                <a class="btn btn-gold" id="save-link" href="#" rel="noopener" data-i18n="done.save">Guardar archivo</a>
+                <button type="button" class="btn btn-ghost" id="again-btn" data-i18n="done.again">Descargar otro</button>
+              </div>
+              <aside class="promo" id="promo" hidden>
+                <p class="promo-title" id="promo-title"></p>
+                <p class="promo-text" id="promo-text"></p>
+                <a class="promo-cta" id="promo-cta" href="#" target="_blank" rel="noopener sponsored"></a>
+              </aside>
+            </div>
+          </div>
+
+          <p class="engine" id="engine"><span class="dot" aria-hidden="true"></span><span id="engine-text" data-i18n="engine.checking">Conectando con el motor…</span></p>
+        </div>
+
+        <div class="recent" id="recent" hidden>
+          <div class="recent-head">
+            <h2 data-i18n="recent.title">Recientes</h2>
+            <button type="button" class="link" id="clear-history" data-i18n="recent.clear">Borrar</button>
+          </div>
+          <ul id="recent-list"></ul>
+        </div>
+
+        <!-- Espacio publicitario opcional (ver MONETIZACION.md). Oculto por defecto. -->
+        <aside class="ad-slot" id="ad-slot-hero" data-ad-slot="hero" hidden></aside>
+      </div>
+    </section>
+
+    <!-- ============ CÓMO FUNCIONA ============ -->
+    <section class="section" id="como">
+      <div class="container">
+        <h2 class="h2" data-i18n="how.title">Tres pasos, sin registro</h2>
+        <ol class="steps">
+          <li><span class="step-n">1</span><h3 data-i18n="how.s1">Copia el enlace</h3><p data-i18n="how.s1p">En la app, toca Compartir y luego Copiar enlace.</p></li>
+          <li><span class="step-n">2</span><h3 data-i18n="how.s2">Elige calidad o audio</h3><p data-i18n="how.s2p">Verás todas las resoluciones disponibles, de 360p hasta 8K, con su peso aproximado.</p></li>
+          <li><span class="step-n">3</span><h3 data-i18n="how.s3">Descarga</h3><p data-i18n="how.s3p">El archivo llega a tu carpeta de descargas, listo para editar o publicar.</p></li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- ============ PLATAFORMAS ============ -->
+    <section class="section" id="plataformas">
+      <div class="container">
+        <h2 class="h2" data-i18n="plat.title">Dónde funciona</h2>
+        <div class="plat-list">
+          <article class="plat">
+            <h3>TikTok</h3>
+            <p data-i18n="plat.tiktok">Videos sin marca de agua, en la resolución original del creador.</p>
+            <p class="plat-max"><span data-i18n="plat.upto">hasta</span> <strong>1080p</strong></p>
+          </article>
+          <article class="plat">
+            <h3>Instagram</h3>
+            <p data-i18n="plat.instagram">Reels y videos de publicaciones públicas, incluidos los carruseles.</p>
+            <p class="plat-max"><span data-i18n="plat.upto">hasta</span> <strong>1080p</strong></p>
+          </article>
+          <article class="plat">
+            <h3>Facebook</h3>
+            <p data-i18n="plat.facebook">Videos y reels públicos, en HD cuando la publicación lo tiene.</p>
+            <p class="plat-max"><span data-i18n="plat.upto">hasta</span> <strong>1080p</strong></p>
+          </article>
+          <article class="plat">
+            <h3>YouTube</h3>
+            <p data-i18n="plat.youtube">Videos y Shorts hasta 8K y 60 fps, con conversión a H.264 si tu editor la necesita.</p>
+            <p class="plat-max"><span data-i18n="plat.upto">hasta</span> <strong>8K</strong></p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ SEGURIDAD ============ -->
+    <section class="section" id="seguridad">
+      <div class="container security">
+        <div class="security-intro">
+          <h2 class="h2" data-i18n="sec.title">Seguro por diseño</h2>
+          <p data-i18n="sec.intro">Las páginas de descarga suelen estar llenas de anuncios engañosos y archivos sospechosos. CLIPMAGNET está construido al revés.</p>
+        </div>
+        <ul class="sec-list">
+          <li><h3 data-i18n="sec.1">Solo audio y video</h3><p data-i18n="sec.1p">Cada archivo se revisa con FFprobe antes de entregarse. Si no es un MP4, M4A, MP3 o WAV real, se descarta.</p></li>
+          <li><h3 data-i18n="sec.2">Cero ventanas emergentes</h3><p data-i18n="sec.2p">Sin redirecciones, sin botones falsos de descarga y sin extensiones que instalar.</p></li>
+          <li><h3 data-i18n="sec.3">Nada se queda guardado</h3><p data-i18n="sec.3p">Los archivos se borran del servidor a los 15 minutos. No pedimos cuenta ni guardamos tus enlaces.</p></li>
+          <li><h3 data-i18n="sec.4">Solo plataformas conocidas</h3><p data-i18n="sec.4p">El motor únicamente se conecta a TikTok, Instagram, Facebook y YouTube. Cualquier otro enlace se rechaza.</p></li>
+          <li><h3 data-i18n="sec.5">Código abierto</h3><p data-i18n="sec.5p">Todo el código está publicado en GitHub para que cualquiera pueda revisarlo.</p></li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ============ PREGUNTAS ============ -->
+    <section class="section" id="preguntas">
+      <div class="container narrow">
+        <h2 class="h2" data-i18n="faq.title">Preguntas frecuentes</h2>
+        <div class="faq">
+          <details class="lg-soft"><summary data-i18n="faq.q1">¿Cuesta algo?</summary><p data-i18n="faq.a1">No. Descargar es gratis y no necesitas crear una cuenta.</p></details>
+          <details class="lg-soft"><summary data-i18n="faq.q2">¿Por qué un video de YouTube en 4K no abre en mi editor?</summary><p data-i18n="faq.a2">YouTube entrega 1440p, 4K y 8K en VP9 o AV1, formatos que algunos editores no leen. Activa Convertir a H.264 antes de descargar y obtendrás un MP4 compatible con Premiere, CapCut, Final Cut y iPhone.</p></details>
+          <details class="lg-soft"><summary data-i18n="faq.q3">¿Cómo sale TikTok sin marca de agua?</summary><p data-i18n="faq.a3">No se borra nada: se descarga la versión que TikTok usa para reproducir el video, que no lleva marca. Si una publicación solo existe con marca, te avisamos.</p></details>
+          <details class="lg-soft"><summary data-i18n="faq.q4">¿Puedo descargar videos privados?</summary><p data-i18n="faq.a4">No. CLIPMAGNET solo ve lo que vería cualquier visitante sin iniciar sesión.</p></details>
+          <details class="lg-soft"><summary data-i18n="faq.q5">¿Qué formato de audio elijo?</summary><p data-i18n="faq.a5">M4A conserva el audio original sin recomprimir. MP3 a 320 kbps es el que abre en cualquier parte. WAV es ideal para editar sin pérdida adicional.</p></details>
+          <details class="lg-soft"><summary data-i18n="faq.q6">¿Puedo usar cualquier video que descargue?</summary><p data-i18n="faq.a6">Descarga solo contenido tuyo, con licencia o con permiso de su autor. Los derechos siguen siendo de quien lo creó.</p></details>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-inner">
+      <div class="footer-brand">
+        <img src="assets/img/logo-96.png" width="40" height="40" alt="">
+        <span class="wordmark">CLIPMAGNET</span>
+      </div>
+      <p class="legal" data-i18n="footer.legal">CLIPMAGNET es una herramienta independiente, sin relación con TikTok, Instagram, Facebook ni YouTube. Úsala solo con contenido que tengas derecho a descargar.</p>
+      <p class="footer-links">
+        <a id="repo-link" href="https://github.com/" target="_blank" rel="noopener" data-i18n="footer.code">Código en GitHub</a>
+        <a id="donate-link" href="#" target="_blank" rel="noopener" hidden></a>
+        <span data-i18n="footer.credits">Funciona con yt-dlp y FFmpeg</span>
+      </p>
+    </div>
+  </footer>
+
+  <script src="assets/js/config.js"></script>
+  <script src="assets/js/i18n.js"></script>
+  <script src="assets/js/glass.js"></script>
+  <script src="assets/js/field.js"></script>
+  <script src="assets/js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,23 @@
+# Despliegue en Render con un clic: https://render.com/deploy
+services:
+  - type: web
+    name: clipmagnet
+    runtime: docker
+    plan: starter
+    healthCheckPath: /api/health
+    autoDeploy: true
+    envVars:
+      - key: CM_TRUST_PROXY_HEADERS
+        value: "true"
+      - key: CM_MAX_DURATION
+        value: "3600"
+      - key: CM_MAX_FILESIZE_MB
+        value: "1536"
+      - key: CM_MAX_HEIGHT
+        value: "2160"
+      - key: CM_MAX_CONCURRENT
+        value: "2"
+      - key: CM_RATE_LIMIT
+        value: "20"
+      - key: CM_ALLOWED_ORIGINS
+        sync: false

@@ -1,0 +1,5 @@
+# Motor de descarga (se actualiza seguido: las plataformas cambian a menudo)
+yt-dlp[default]>=2026.8.19
+# Servidor web
+fastapi>=0.115,<1.0
+uvicorn[standard]>=0.30
