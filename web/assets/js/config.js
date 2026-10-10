@@ -7,10 +7,10 @@ window.CLIPMAGNET_CONFIG = {
      ""  → la web y el motor están en el mismo servidor (uso local o Docker).
      Si publicas la web en GitHub Pages, pon aquí la URL de tu servidor, p. ej.:
      "https://clipmagnet-api.onrender.com" */
-  apiBase: https://clipmagnet.onrender.com/,
+  apiBase: "https://clipmagnet.onrender.com/",
 
   /* Enlace al repositorio (aparece en el pie de página) */
-  repoUrl: "https://github.com/TU-USUARIO/clipmagnet",
+       repoUrl: "https://github.com/juanpablovillamedina39-stack/Clipmagnet",
 
   /* Idioma por defecto si el navegador no es español ni inglés */
   defaultLang: "es",
