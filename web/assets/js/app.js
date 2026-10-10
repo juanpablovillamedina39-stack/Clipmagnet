@@ -114,7 +114,10 @@
     }
     let data = null;
     try { data = await res.json(); } catch (_) { /* sin cuerpo */ }
-    if (!res.ok) throw new ApiError((data && data.error) || (res.status === 404 ? "not_found" : "failed"));
+    // Si la respuesta no trae el formato de CLIPMAGNET (p. ej. un 404/405 de
+    // GitHub Pages), es que no hay motor detrás de esta dirección.
+    if (!data || typeof data !== "object") throw new ApiError("server_offline");
+    if (!res.ok) throw new ApiError(data.error || (res.status === 404 ? "not_found" : "failed"));
     return data;
   }
 
@@ -143,6 +146,10 @@
   /*  Motor                                                                 */
   /* ---------------------------------------------------------------------- */
   async function checkEngine() {
+    state.engine = "checking";
+    renderEngine();
+    // Los servidores gratuitos (p. ej. Render) se duermen y tardan ~1 min en despertar
+    const slow = setTimeout(() => { if (state.engine === "checking") { state.engine = "waking"; renderEngine(); } }, 4000);
     try {
       const h = await api.health();
       state.engine = cfg.demo ? "demo" : h.js_runtime ? "ok" : "noJs";
@@ -150,6 +157,8 @@
       el.engine.title = h.ytdlp ? `yt-dlp ${h.ytdlp}` : "";
     } catch (_) {
       state.engine = "off";
+    } finally {
+      clearTimeout(slow);
     }
     renderEngine();
   }
@@ -157,7 +166,8 @@
   function renderEngine() {
     el.engine.classList.toggle("ok", ["ok", "noJs", "demo"].includes(state.engine));
     el.engine.classList.toggle("off", state.engine === "off");
-    el.engineText.textContent = t(`engine.${state.engine === "checking" ? "checking" : state.engine}`);
+    el.engine.classList.toggle("waking", state.engine === "waking");
+    el.engineText.textContent = t(`engine.${state.engine}`);
   }
 
   /* ---------------------------------------------------------------------- */
@@ -207,6 +217,10 @@
     if (!url) { showAlert("empty", "info"); el.url.focus(); return; }
     if (!detectPlatform(url)) { showAlert(/^(https?:\/\/)?[^\s/]+\.[^\s]+/.test(url) ? "unsupported_platform" : "invalid_url"); return; }
     if (state.job && !["done", "error", "cancelled"].includes(state.job.status)) return;
+    if (state.engine === "off") {
+      await checkEngine();
+      if (state.engine === "off") { showAlert("server_offline"); return; }
+    }
 
     analyzing = true;
     showAlert(null);
